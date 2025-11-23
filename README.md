@@ -26,29 +26,32 @@ It uses ResNeXt (CNN) for spatial feature extraction and LSTM (RNN) for temporal
 🧠 Algorithms & Technologies Used
 1. ResNeXt (Deep CNN)
 
-Extracts spatial features from each video frame
+•Extracts spatial features from each video frame
 
-Captures textures, edges, lighting inconsistencies
+•Captures textures, edges, lighting inconsistencies
 
-Based on grouped convolutions & cardinality
+•Based on grouped convolutions & cardinality
 
-Great for detecting visual artifacts in deepfakes
+•Great for detecting visual artifacts in deepfakes
+
 
 2. LSTM (Long Short-Term Memory Network)
 
-Processes frames in sequence
+•Processes frames in sequence
 
-Detects unnatural facial movements (eye blinking, head jerks, lip sync issues)
+•Detects unnatural facial movements (eye blinking, head jerks, lip sync issues)
 
-Good for temporal deepfake detection
+•Good for temporal deepfake detection
+
 
 3. Face Detection — face_recognition
 
-Detects and crops faces from frames
+•Detects and crops faces from frames
 
-Ensures the model focuses only on the important region
+•Ensures the model focuses only on the important region
 
 📂 Project Structure
+```
 Deepfake-Detection/
 │── templates/
 │      ├── base.html
@@ -60,13 +63,14 @@ Deepfake-Detection/
 │      ├── style.css
 │
 │── model/
-│      ├── df_model.pt  (Your trained model)
+│      ├── df_model.pt   (Your trained model)
 │
-│── uploads/            (Auto-created for video uploads)
+│── uploads/             (Auto-created for video uploads)
 │
-│── server.py / app.py  (Flask backend)
+│── server.py / app.py   (Flask backend)
 │── requirements.txt
 │── README.md
+```
 
 🛠 Installation & Setup
 1. Clone the repository
@@ -84,19 +88,19 @@ http://127.0.0.1:5000
 
 🎯 How It Works (Pipeline)
 
-User uploads a video (drag & drop or button).
+•User uploads a video (drag & drop or button).
 
-Backend extracts frames using OpenCV.
+•Backend extracts frames using OpenCV.
 
-Face region is detected using face_recognition.
+•Face region is detected using face_recognition.
 
-Frames are passed through ResNeXt → extract spatial features.
+•Frames are passed through ResNeXt → extract spatial features.
 
-Sequence of frame features passed into LSTM → analyze motion patterns.
+•Sequence of frame features passed into LSTM → analyze motion patterns.
 
-Output layer predicts REAL or FAKE with confidence.
+•Output layer predicts REAL or FAKE with confidence.
 
-Result is shown in a neon-styled UI panel.
+•Result is shown in a neon-styled UI panel.
 
 📌 Why This Project?
 
