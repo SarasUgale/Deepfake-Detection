@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="text-center max-w-4xl mx-auto animate-slideFadeIn">
+  <h1 class="font-orbitron text-5xl text-neon ">
+    Deepfake Detection
+  </h1>
+  <p class="font-poppins text-gray-300 mb-8 text-lg leading-relaxed opacity-0 animate-fadeIn" style="animation-delay: 0.5s;">
+    Deepfakes are synthetic media where a person in an existing image or video is replaced with someone else's likeness.
+    This technology can be misused to spread misinformation, damage reputations, and cause harm. Our mission is to empower users
+    to identify deepfake content reliably.
+  </p>
+
+  <div class="relative mx-auto mb-10 max-w-3xl aspect-video rounded-lg overflow-hidden shadow-lg ring-2 ring-accent hover:ring-neon transition opacity-0 animate-fadeIn" style="animation-delay: 0.8s;">
+    <iframe 
+      src="static/video/DFD Video.mp4" 
+      title="What is a Deepfake? | Deepfake Detection" 
+      frameborder="0" allowfullscreen 
+      class="w-full h-full"
+      loading="lazy"
+      ></iframe>
+  </div>
+
+  <h2 class="text-3xl font-orbitron text-accent mb-8 opacity-0 animate-fadeIn" style="animation-delay: 1.1s;">Why Deepfake Detection Matters</h2>
+
+  <div class="grid md:grid-cols-3 gap-8 opacity-0 animate-fadeIn" style="animation-delay: 1.4s;">
+    <div class="bg-darkbg rounded-lg p-6 shadow-lg border border-neon/30 hover:border-neon transition flex flex-col items-center text-center">
+      <img src="{{ url_for('static', filename='icons/info.svg') }}" alt="Information" class="w-16 h-16 mb-4" />
+      <h3 class="font-orbitron text-xl text-neon mb-2">Misinformation Control</h3>
+      <p class="text-gray-400 font-poppins">
+        Deepfakes can spread false information rapidly. Detecting them helps protect truth.
+      </p>
+    </div>
+
+    <div class="bg-darkbg rounded-lg p-6 shadow-lg border border-neon/30 hover:border-neon transition flex flex-col items-center text-center">
+      <img src="{{ url_for('static', filename='icons/warning.svg') }}" alt="Warning" class="w-16 h-16 mb-4" />
+      <h3 class="font-orbitron text-xl text-neon mb-2">Privacy Protection</h3>
+      <p class="text-gray-400 font-poppins">
+        Prevent malicious use of your likeness by detecting manipulated videos early.
+      </p>
+    </div>
+
+    <div class="bg-darkbg rounded-lg p-6 shadow-lg border border-neon/30 hover:border-neon transition flex flex-col items-center text-center">
+      <img src="{{ url_for('static', filename='icons/deepfake.svg') }}" alt="Deepfake" class="w-16 h-16 mb-4" />
+      <h3 class="font-orbitron text-xl text-neon mb-2">Cutting-edge AI</h3>
+      <p class="text-gray-400 font-poppins">
+        Our detection model uses state-of-the-art neural networks to analyze video authenticity.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-gray-900 text-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deepfake Detection</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind custom config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: '#39FF14',
+            darkbg: '#0f172a',
+            accent: '#22d3ee',
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s ease-in-out infinite',
+            'spin-slow': 'spin 3s linear infinite',
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- NAV -->
+  <nav class="bg-darkbg bg-opacity-80 backdrop-blur-md shadow-md sticky top-0 z-50 flex items-center justify-between px-6 py-4">
+    <a href="{{ url_for('home') }}" class="font-orbitron text-3xl text-neon hover:text-accent transition duration-300">Deepfake<span class="text-accent">⚡</span>Guard</a>
+
+    <ul class="hidden md:flex space-x-8 text-lg font-poppins font-semibold">
+      <li><a href="{{ url_for('home') }}" class="hover:text-accent transition">Home</a></li>
+      <li><a href="{{ url_for('detect') }}" class="hover:text-accent transition">Detect</a></li>
+    </ul>
+
+    <!-- Mobile Hamburger -->
+    <input type="checkbox" id="nav-toggle" class="peer hidden" />
+    <label for="nav-toggle" class="md:hidden cursor-pointer">
+      <div class="space-y-1.5">
+        <span class="block w-6 h-0.5 bg-neon"></span>
+        <span class="block w-6 h-0.5 bg-neon"></span>
+        <span class="block w-6 h-0.5 bg-neon"></span>
+      </div>
+    </label>
+
+    <div class="peer-checked:block hidden absolute bg-darkbg top-full right-6 rounded-md shadow-lg p-4 w-40 md:hidden">
+      <ul class="flex flex-col gap-4 font-poppins font-semibold text-lg">
+        <li><a href="{{ url_for('home') }}" class="hover:text-accent transition">Home</a></li>
+        <li><a href="{{ url_for('detect') }}" class="hover:text-accent transition">Detect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="flex-grow container mx-auto px-6 py-10 max-w-7xl">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="bg-darkbg text-center py-6 font-poppins text-sm text-gray-500 select-none">
+    &copy; 2025 DeepfakeGuard - All Rights Reserved
+  </footer>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Your custom JS -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  {% if data %}
+  <script>
+    window.__DF_RESULT__ = {{ data | tojson }};
+  </script>
+  {% endif %}
+</body>
+</html>

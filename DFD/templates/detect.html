@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto p-6 bg-darkbg rounded-xl shadow-lg border border-neon/30 animate-slideFadeIn">
+
+  <h1 class="text-4xl font-orbitron text-neon text-center mb-8 opacity-0 animate-fadeIn">
+    Detect Deepfake Videos
+  </h1>
+
+  <form id="upload-form" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
+    <label for="video" class="cursor-pointer bg-neon hover:bg-accent text-darkbg font-semibold py-3 rounded-md text-center transition">
+      Choose Video File
+      <input type="file" id="video" name="video" accept="video/*" required class="hidden" />
+    </label>
+
+    <div id="video-preview-container" class="hidden relative rounded-lg overflow-hidden border border-neon/50 opacity-0">
+      <video id="video-preview" class="w-full rounded-md" controls></video>
+      <button type="button" id="clear-video" title="Clear selection" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 rounded-full p-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <button type="submit" id="submit-btn" class="bg-neon hover:bg-accent py-3 rounded-md font-semibold transition disabled:opacity-50" disabled>
+      Detect Deepfake
+    </button>
+  </form>
+
+  <!-- Loading Spinner -->
+  <div id="loading-spinner" class="hidden mt-8 flex justify-center items-center space-x-3">
+  <svg class="animate-spin-slow h-10 w-10 text-neon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+  </svg>
+  <span class="font-poppins text-neon text-xl">Analyzing video, please wait...</span>
+</div>
+
+
+  <!-- Result Panel -->
+  <div id="result-panel" class="hidden mt-10 bg-gray-800 rounded-lg p-6 border border-neon/50 shadow-lg opacity-0">
+    <h2 class="text-2xl font-orbitron mb-4">Detection Result</h2>
+    <p class="text-lg font-poppins mb-2">Video is classified as: 
+      <span id="result-label" class="font-semibold"></span>
+    </p>
+    <p id="confidence-score" class="text-sm text-gray-400"></p>
+  </div>
+
+</section>
+
+<script>
+  const videoInput = document.getElementById('video');
+  const submitBtn = document.getElementById('submit-btn');
+  const previewContainer = document.getElementById('video-preview-container');
+  const previewVideo = document.getElementById('video-preview');
+  const clearBtn = document.getElementById('clear-video');
+  const resultPanel = document.getElementById('result-panel');
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const resultLabel = document.getElementById('result-label');
+  const confidenceScore = document.getElementById('confidence-score');
+  const uploadForm = document.getElementById('upload-form');
+
+  videoInput.addEventListener('change', () => {
+    if(videoInput.files.length > 0) {
+      submitBtn.disabled = false;
+
+      // Show preview video
+      const file = videoInput.files[0];
+      previewVideo.src = URL.createObjectURL(file);
+      previewContainer.classList.remove('hidden');
+      previewContainer.classList.add('animate-fadeInQuick', 'opacity-100');
+    } else {
+      submitBtn.disabled = true;
+      previewContainer.classList.add('hidden');
+    }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    videoInput.value = "";
+    submitBtn.disabled = true;
+    previewContainer.classList.add('hidden');
+    previewVideo.src = "";
+    resultPanel.classList.add('hidden');
+  });
+
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Hide previous results & show spinner
+    resultPanel.classList.add('hidden');
+    loadingSpinner.classList.remove('hidden');
+
+    const formData = new FormData(uploadForm);
+
+    try {
+      const response = await fetch('/detect', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const data = await response.json();
+
+      loadingSpinner.classList.add('hidden');
+
+      // Update result panel with model output
+      resultLabel.textContent = data.output;
+      confidenceScore.textContent = `Confidence: ${data.confidence.toFixed(2)}%`;
+
+      resultPanel.classList.remove('hidden');
+      resultPanel.classList.add('animate-fadeScaleIn', 'opacity-100');
+
+      resultPanel.addEventListener('animationend', () => {
+        resultPanel.classList.remove('animate-fadeScaleIn');
+      }, { once: true });
+
+    } catch (error) {
+      loadingSpinner.classList.add('hidden');
+      alert('Error processing video. Please try again.');
+      console.error('Error:', error);
+    }
+  });
+</script>
+
+{% endblock %}
