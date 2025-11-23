@@ -1,0 +1,11 @@
+flask
+werkzeug
+numpy
+opencv-python
+torch
+torchvision
+torchaudio
+face-recognition
+Pillow
+tqdm
+scikit-learn
