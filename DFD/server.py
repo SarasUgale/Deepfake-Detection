@@ -1,3 +1,22 @@
+import os
+import requests
+
+MODEL_PATH = "model/df_model.pt"
+
+if not os.path.exists(MODEL_PATH):
+    os.makedirs("model", exist_ok=True)
+
+    url = "https://huggingface.co/YOUR_USERNAME/deepfake-model/resolve/main/df_model.pt"
+
+    print("Downloading model...")
+
+    r = requests.get(url)
+
+    with open(MODEL_PATH, "wb") as f:
+        f.write(r.content)
+
+    print("Model downloaded")
+
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 import os
