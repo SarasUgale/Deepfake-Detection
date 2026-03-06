@@ -9,3 +9,4 @@ face-recognition
 Pillow
 tqdm
 scikit-learn
+gunicorn
